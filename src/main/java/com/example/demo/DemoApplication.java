@@ -11,13 +11,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 @SpringBootApplication
 @RestController
@@ -26,6 +25,23 @@ public class DemoApplication {
     public static void main(String[] args) {
         SpringApplication.run(DemoApplication.class, args);
     }
+@GetMapping("/file")
+public static String File() throws FileNotFoundException {
+    String token="";
+    Scanner file=new Scanner(new File("cities.json"));
+    List <String> temp=new ArrayList<String>();
+    while (file.hasNextLine()){
+        token=file.next();
+        temp.add(token);
+        String[]tempArray=temp.toArray(new String[0]);
+
+        for (String s:tempArray){
+            return s;
+        }
+    }
+    file.close();
+    return "null";
+}
 
     @GetMapping("/read")
     public static allReturnWeather GetMyRequest()throws IOException{
@@ -42,8 +58,7 @@ public class DemoApplication {
         while ((readLine = in .readLine()) != null) {
             response.append(readLine);
         } in .close();
-        // print result
-        System.out.println("JSON String Result " + response.toString());
+
         Gson gson=new GsonBuilder().create();
         openWeather openWeather=gson.fromJson(response.toString(), Model.openWeather.class);
         System.out.println(openWeather.getClouds());
@@ -69,7 +84,6 @@ public class DemoApplication {
         allReturnWeather.setVisibility(openWeather.getVisibility());
         allReturnWeather.setWind(openWeather.getWind());
         return allReturnWeather;
-        //GetAndPost.POSTRequest(response.toString());
     } else {
         System.out.println("GET NOT WORKED");
         return null;

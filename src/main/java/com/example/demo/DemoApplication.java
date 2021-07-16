@@ -8,6 +8,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.Caching;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,6 +21,7 @@ import java.util.List;
 import java.util.Scanner;
 
 @SpringBootApplication
+@EnableCaching
 @RestController
 public class DemoApplication {
 
@@ -43,7 +46,7 @@ public static String File() throws FileNotFoundException {
     return "null";
 }
 
-    @GetMapping("/read")
+    @GetMapping ("/read")
     public static allReturnWeather GetMyRequest()throws IOException{
     URL urlForGetRequest = new URL("https://api.openweathermap.org/data/2.5/weather?id=1248991&units=metric&APPID=fd5b48e2cfe820a34626e79d5309799b");
     String readLine = null;
@@ -89,5 +92,6 @@ public static String File() throws FileNotFoundException {
         return null;
     }
 }
+
 }
 
